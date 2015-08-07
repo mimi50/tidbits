@@ -1,0 +1,11 @@
+git basics:
+
+1- create directory for git files
+2- create files 
+3- git init		:initialise git for this directory: When we type this code in, it tells the computer to recognize this directory as a local Git repository 
+4- git status	:untracked files will show up 
+5- git add readme.txt	:added to git to track
+6- git commit -m "Add readme.txt"	:take a snapshot  with -m message always in present tense.
+7- git remote add origin https://github.com/mimikveh2/jmeter-tidbits	:connect local repo to github repo
+8- git remote -v	:This command gives you a list of all the remote origins your local repository knows about.
+9- git push	:upload all changes to github
