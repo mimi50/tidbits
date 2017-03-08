@@ -1,1 +1,5 @@
-jmeter tid bits:
+tid bits:
+linux
+docker
+git
+jmeter
