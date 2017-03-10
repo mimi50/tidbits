@@ -1,11 +1,5 @@
-```javascript
-
-var oldUnload = window.onbeforeunload;
-window.onbeforeunload = function() {
-    saveCoverage();
-    if (oldUnload) {
-        return oldUnload.apply(this, arguments);
-    }
-};
-
+```
+function test() {
+  console.log("notice the blank line before this function?");
+}
 ```
