@@ -1,4 +1,5 @@
 ```javascript
+
 var oldUnload = window.onbeforeunload;
 window.onbeforeunload = function() {
     saveCoverage();
@@ -6,4 +7,5 @@ window.onbeforeunload = function() {
         return oldUnload.apply(this, arguments);
     }
 };
+
 ```
