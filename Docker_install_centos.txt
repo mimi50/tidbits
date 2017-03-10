@@ -1,0 +1,44 @@
+Docker for CentOS 
+source: https://docs.docker.com/engine/installation/linux/centos/
+
+sudo yum install -y yum-utils
+
+sudo yum-config-manager \
+    --add-repo \
+    https://docs.docker.com/engine/installation/linux/repo_files/centos/docker.repo
+	
+
+sudo yum-config-manager --enable docker-testing
+	
+sudo yum makecache fast
+
+sudo yum -y install docker-engine ( installs the latest )
+
+yum list docker-engine.x86_64  --showduplicates |sort -r
+	install the latest with .el7 for example
+	
+
+# for specific docker engine version 	
+sudo yum -y install docker-engine-<VERSION_STRING> 
+for example: sudo yum -y install docker-engine.x86_64 1.13.1-1.el7.centos	
+
+# start docker
+sudo systemctl start docker
+
+# verify docker is working
+sudo docker run hello-world
+
+# manage docker as non-root ( not needing sudo with each docker command )
+
+sudo groupadd docker
+
+sudo usermod -aG docker $USER
+
+log out and back in
+
+# configure Docker to start on boot
+
+sudo systemctl enable docker
+sudo chkconfig docker on
+reboot
+

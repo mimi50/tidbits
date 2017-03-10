@@ -1,0 +1,307 @@
+linux commands:
+
+# Add the Enter passphrase for key '/home/euserx/.ssh/id_rsa' only once:
+
+1- At the Unix prompt, enter:
+  eval `ssh-agent`
+Note: Make sure you use the backquote (`), located under the tilde (~), rather than the single quote (').
+
+2- Enter the command:
+  ssh-add
+
+3- Enter your private key password.
+
+4- When you log out, enter the command:
+  kill $SSH_AGENT_PID
+  
+  
+# Mount vbox share on guest linux:
+# centos
+sudo mount -t vboxsf vshare /home/euserx/vshare
+# ubuntu
+sudo mount -t vboxsf vagrant /home/vagrant/share
+
+# recursive replace string , rename:
+
+find ./directory/ -type f -exec sed -i -e 's/old_string/new_string/g' {} \; 
+
+# find by name with date 
+find ./ -name patient_creation* -printf '%Tc %p\n
+
+
+# symbolic link:
+
+ln -s /path/to/file /path/to/symlink
+
+# secure copy:
+
+scp <localfile>username@tohostname:<remotefi2le>
+The syntax for scp is:
+
+If you are on the computer from which you want to send file to a remote computer:
+
+scp /file/to/send username@remote:/where/to/put
+Here the remote can be a FQDN or an IP address.
+
+On the other hand if you are on the computer wanting to receive file from a remote computer:
+
+scp username@remote:/file/to/send /where/to/put
+scp can also send files between two remote hosts:
+
+scp username@remote_1:/file/to/send username@remote_2:/where/to/put
+So the basic syntax is:
+
+scp username@source:/location/to/file username@destination:/where/to/put
+
+
+# unzip
+
+unzip file.zip -d destination_folder
+
+# show mounted drives:
+
+a] df command – Show file system disk space usage.
+
+[b] mount command – Show all mounted file systems.
+
+[c] /proc/mounts or /proc/self/mounts file – Show all mounted file systems.
+
+Examples
+
+Open a terminal or login using ssh into the remote server and type the following command:
+$ cat /proc/mounts
+
+OR
+$ cat /proc/self/mounts
+
+
+## Shutdown linux:
+
+        /sbin/shutdown -h now
+        /sbin/shutdown -r now
+		
+# grep with n lines above and below the string search:
+
+grep -C5 <string>	# above and below
+grep -A5 <string> # above only
+grep -B5 <sting> # below only	
+
+# Export putty sessions:
+
+regedit /e "%userprofile%\Desktop\putty-sessions.reg" HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions
+regedit /e "%userprofile%\Desktop\putty-sessions-qaha.reg" HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions\qa-ha.cb.xyz.com
+
+# Import reg file settings:
+
+regedit.exe /S yourfile.reg
+
+# rsync directory/ to directory/
+rsync -avzh /root/source/ /tmp/desitnation/
+
+sync all the mgup scripts:
+
+sudo mount -t vboxsf vshare /home/euserx/vshare
+
+rsync -avzh /usr/share/jmeter/apache-jmeter-3.0/bin/xyz/MGUP/jmx/ /home/euserx/vshare/mgup/
+
+rsync -avzh /home/euserx/xyz/xyz/scripts/Jmeter/MGUP/jmeter_scripts/  /usr/share/jmeter/apache-jmeter-3.0/bin/xyz/MGUP/git/
+
+
+# https://careinsync.atlassian.net/wiki/display/DEV/Openconnect+VPN+Client+Setup+on+Mac
+# openconnect via centos7 :
+openconnect --script /etc/vpnc/vpnc-script https://vpnwest.hrstbusinessmedia.com/
+user: euserx
+pass: ldap windows
+
+
+# add user and password
+sudo useradd <username>
+sudo passwd <username>
+
+# outlook online:
+https://login.microsoftonline.com/login.srf?wa=wsignin1.0&rpsnv=4&ct=1479503284&rver=6.6.6556.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.office.com%2fowa%2f&id=260563&CBCXT=out&msafed=0#wa=wsignin1.0
+
+
+
+# get all the images from xyz:
+
+scp euserx@qa-ha:/tmp/QA-HA/0712eb7c-466f-4505-91ac-2d5179fa37c8/image/connect/*.jpg ~/vshare/images/
+
+# whatis whereis which
+http://superuser.com/questions/40301/which-whereis-differences
+
+# verify port openings
+
+telnet localhost 6661
+telnet localhost 8080
+
+# SE manage
+semanage
+
+/usr/bin/python -Es /usr/bin/sealert -b
+
+
+# bootloader gives 
+
+
+# update centos7 packages:
+yum clean all
+sudo yum update --skip-broken
+
+# check if selinux is enforced if yes 1
+
+cat /sys/fs/selinux/enforce
+1
+
+# reboot:
+systemctl reboot
+
+# get testlink keywoard id to delete:
+# https://testlink-usw2.xyz.com/testlink/lib/keywords/keywordsView.php?tproject_id=22
+1- view source and copy to file > extract only the keyword ids with this command:
+2- cat keywords | grep "doAction=edit&id=" | awk -F"=" '{print $5}' | awk -F "\"" '{print $1}'
+3- run curl command to delete all the erroneos keywords in bulk
+# -F specifies the delimeter character
+cat test | grep "doAction=edit&id=" | awk -F"=" '{print $5}' | awk -F "\"" '{print $1}'
+
+# reinstall kernel
+sudo yum reinstall kernel
+
+# view kernels installed
+rpm -qa | grep kernel | sort -n 
+
+# kernel version
+uname -r
+
+# clear the terminal buffer
+tput reset
+
+# httpd restart start stop status
+systemctl restart httpd
+systemctl stop httpd
+systemctl start httpd
+systemctl status httpd
+
+# start maria db
+sudo systemctl start mariadb
+
+# info about a packages
+yum info package_name
+
+# search for additional packages
+yum search php-
+
+# centos7 httpd root:
+/var/www/html/
+http://localhost/info.php
+
+# reload sshd
+systemctl reload sshd
+
+# unpretty json to fit
+jq -c . LowSuicideRiskOrderSet_payload.json
+
+# ubuntu start stop tomcat7
+sudo service tomcat7 stop
+sudo service tomcat7 start
+
+# ubuntu unity desktop minimal
+
+sudo apt-get install --no-install-recommends ubuntu-desktop
+
+# tomcat7 root directory:
+/var/lib/tomcat7/webapps/ROOT/index.hmtl
+
+# vagrant configure a bridged network and not NAT:
+config.vm.network "public_network"
+
+# vagrant run in GUI mode:
+	config.vm.provider "virtualbox" do |vb|
+  # Display the VirtualBox GUI when booting the machine
+  	vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  end
+  
+# get active zones FIREWALL LINUX
+sudo firewall-cmd --get-active-zones
+
+# open a port FIREWALL
+
+firewall-cmd --zone=dmz --add-port=2888/tcp --permanent
+
+Otherwise, substitute dmz for your zone, for example, if your zone is public:
+
+firewall-cmd --zone=public --add-port=4444/tcp --permanent
+Then remember to reload the firewall for changes to take effect.
+
+firewall-cmd --reload  
+
+# windows get memory bank info:
+c:\vshare>wmic MEMORYCHIP get BankLabel,DeviceLocator,Capacity,Tag
+BankLabel  Capacity    DeviceLocator     Tag
+ChannelA   8589934592  Top-Slot 1(left)  Physical Memory 0
+
+# windows wmic format:
+wmic memorychip get /format:hform > c:\vshare\memorychip.htm
+
+# verify which distro you're on
+
+cat /etc/*-release
+cat /proc/version
+
+lsb_release -a
+
+
+# how much disk space left
+df -h
+
+# ubuntu 16.04 create start up script
+1- create a script with .conf extension
+2- save it in the $HOME/<user>/.config/upstart directory 
+e.g.:
+
+vagrant@ubuntu:~/.config/upstart$ cat mount_share.conf 
+start on desktop-start
+stop on desktop-end
+
+script
+  sudo mount -t vboxsf vagrant /home/vagrant/share
+end script
+
+# ubuntu restart network interface:
+sudo /etc/init.d/networking restart
+
+# ubuntu no ifconfig
+apt-get install net-tools
+
+# ubuntu no ping command
+apt-get install iputils-ping
+
+# dmesg 
+is used to examine or control the kernel ring buffer.
+
+       The  default  action  is  to  display all messages from the kernel ring
+       buffer.
+# syslog
+tail /var/log/syslog
+
+
+# jenkins docker run
+docker run -p 8080:8080 -p 50000:50000 -v /your/home:/var/jenkins_home jenkins	   
+
+# ubuntu release space in the /boot directory 
+kernelver=$(uname -r | sed -r 's/-[a-z]+//')
+dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve $kernelver
+
+sudo apt-get purge $(dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve "$(uname -r | sed -r 's/-[a-z]+//')")
+
+# ubuntu set System-wide environment variables :
+1- with root , create a new shell script under /etc/profile.d/ directory with unique name, e.g. myenv.sh
+2- add the export statements in myenv.sh e.g. 
+export JMETER_HOME=/opt/jmeter/bin
+export PATH=$PATH:$JMETER_HOME
+3- chmod +x /etc/profile.d/myenv.sh
+4- logout and back in
+5- echo $JMETER_HOME and you will see the path to jmeter

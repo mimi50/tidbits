@@ -1,0 +1,198 @@
+#efi2
+#docker to kubectl commands:
+https://kubernetes.io/docs/user-guide/docker-cli-to-kubectl/
+
+#start minikube
+minikube start 
+
+minikube.exe start --kubernetes-version="v1.5.0" --vm-driver="virtualbox"  --alsologtostderr
+
+#minikube status
+minikube status
+
+#kubectl cluster-info
+kubectl cluster-info
+
+#nodes in local cluster
+kubectl get nodes
+
+NAME       STATUS    AGE
+minikube   Ready     1d
+
+
+#cluster ip address:	
+minikube ip 
+
+#launch k8s dashboard:
+minikube dashboard
+
+#see dashboard url
+minikube dashboard --url=true
+
+http://192.168.99.100:30000
+
+kubectl run hapi-fhir --image=mimi50/hapi-fhir --port=8080 --command -- /bin/bash /opt/hapi/hapi-fhir-cli run-server -f dstu3
+
+kubectl describe services
+
+Name:                   kubernetes
+Namespace:              default
+Labels:                 component=apiserver
+                        provider=kubernetes
+Selector:               <none>
+Type:                   ClusterIP
+IP:                     10.0.0.1
+Port:                   https   443/TCP
+Endpoints:              10.0.2.15:8443
+Session Affinity:       ClientIP
+No events.
+
+#stop all the containers runnng hapi-fhir
+kubectl delete deployments/hapi-fhir
+deployment "hapi-fhir" deleted
+
+#
+kubectl get pods
+kubectl get pods -o wide
+
+#delete specific pods
+kubectl delete pod hapi-fhir-2813055512-84d24
+
+
+kubectl get services
+NAME         CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   10.0.0.1     <none>        443/TCP   21h
+
+
+kubectl get deployment hapi-fhir
+NAME        DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+hapi-fhir   1         1         1            1           17h
+
+
+kubectl get pods --all-namespaces
+NAMESPACE     NAME                          READY     STATUS    RESTARTS   AGE
+default       hapi-fhir-2813055512-84d24    1/1       Running   0          16h
+kube-system   kube-addon-manager-minikube   1/1       Running   4          21h
+kube-system   kube-dns-v20-mxhp8            3/3       Running   14         21h
+kube-system   kubernetes-dashboard-49dtl    1/1       Running   7          21h
+
+#have kubectl point to the correct cluster 
+kubectl config use-context minikube
+
+#run a workload ( run a container )
+kubectl.exe run hello-nginx --image=nginx --port=80
+
+deployment "hello-nginx" created
+
+#list the pod created
+kubectl get pods
+
+NAME                           READY     STATUS    RESTARTS   AGE
+hello-nginx-2471083592-9w23f   1/1       Running   0          2m
+
+
+#describe pod
+kubectl describe pod hello-nginx-2471083592-9w23f
+
+Name:           hello-nginx-2471083592-9w23f
+Namespace:      default
+Node:           minikube/192.168.99.100
+Start Time:     Thu, 09 Mar 2017 11:27:34 -0800
+Labels:         pod-template-hash=2471083592
+                run=hello-nginx
+Status:         Running
+IP:             172.17.0.3
+Controllers:    ReplicaSet/hello-nginx-2471083592
+Containers:
+  hello-nginx:
+    Container ID:       docker://f8169d210aece122368a597f0a33e9057d3c2dc74eea5d5a7d302008421a0f2f
+    Image:              nginx
+    Image ID:           docker://sha256:6b914bbcb89e49851990e064568dceee4d53a462f316ec36207599c12ae9ba65
+    Port:               80/TCP
+    State:              Running
+      Started:          Thu, 09 Mar 2017 11:28:43 -0800
+    Ready:              True
+    Restart Count:      0
+    Volume Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from default-token-2bvrx (ro)
+    Environment Variables:      <none>
+Conditions:
+  Type          Status
+  Initialized   True
+  Ready         True
+  PodScheduled  True
+Volumes:
+  default-token-2bvrx:
+    Type:       Secret (a volume populated by a Secret)
+    SecretName: default-token-2bvrx
+QoS Class:      BestEffort
+Tolerations:    <none>
+Events:
+  |FirstSeen|     |LastSeen|        |Count|   |From|                    |SubObjectPath|                   |Type|            |Reason|          |Message|
+  |---------|     |--------|        |-----|   |----|                    |-------------|                   |--------|        |------|          |-------|
+  6m            6m              1       {default-scheduler }                                    Normal          Scheduled       Successfully assigned hello-nginx-2471083592-9w23f to minikube
+  6m            6m              1       {kubelet minikube}      spec.containers{hello-nginx}    Normal          Pulling         pulling image "nginx"
+  5m            5m              1       {kubelet minikube}      spec.containers{hello-nginx}    Normal          Pulled          Successfully pulled image "nginx"
+  5m            5m              1       {kubelet minikube}      spec.containers{hello-nginx}    Normal          Created         Created container with docker id f8169d210aec; Security:[seccomp=unconfined]
+  5m            5m              1       {kubelet minikube}      spec.containers{hello-nginx}    Normal          Started         Started container with docker id f8169d210aec
+
+
+  
+#Expose a Service
+kubectl.exe expose deployment hello-nginx --type=NodePort
+
+service "hello-nginx" exposed
+
+#List the exposed services
+kubectl.exe get services
+
+#Describe service
+kubectl describe service hello-nginx
+
+Name:                   hello-nginx
+Namespace:              default
+Labels:                 run=hello-nginx
+Selector:               run=hello-nginx
+Type:                   NodePort
+IP:                     10.0.0.216
+Port:                   <unset> 80/TCP
+NodePort:               <unset> 32340/TCP
+Endpoints:              172.17.0.3:80
+Session Affinity:       None
+No events.
+
+#Get URL of exposed service
+minikube.exe service --url=true hello-nginx
+
+http://192.168.99.100:32340
+
+#Launch the exposed service directly in browser
+minikube.exe service hello-nginx
+
+#View logs of service
+kubectl logs <pod name>
+e.g. kubectl logs hello-nginx-2471083592-9w23f
+
+#Scale the service
+kubectl scale --replicas=3 deployment/hello-nginx
+
+deployment "hello-nginx" scaled
+
+#list the scaled pods
+kubectl get pods 
+
+NAME                           READY     STATUS    RESTARTS   AGE
+hello-nginx-2471083592-9w23f   1/1       Running   0          2h
+hello-nginx-2471083592-bh5z0   1/1       Running   0          20m
+hello-nginx-2471083592-w6hwl   1/1       Running   0          20m
+
+#shutdown all the pods of a service
+kubectl scale --replicas=0 deployment/hello-nginx
+
+#list all containers running belonging to service
+kubectl get po -l run=hapi-fhir
+
+NAME                         READY     STATUS    RESTARTS   AGE
+hapi-fhir-2813055512-skczk   1/1       Running   0          14m
+
+#

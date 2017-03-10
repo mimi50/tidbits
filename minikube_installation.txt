@@ -1,0 +1,74 @@
+Minikube is a tool that makes it easy to run Kubernetes locally. 
+Minikube runs a single-node Kubernetes cluster inside a VM on your laptop for users looking to try out Kubernetes or develop with it day-to-day.
+
+# minikube ubuntu xenial 16.04 installation
+
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.17.1/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+
+sudo apt install virtualbox virtualbox-ext-pack 
+
+
+
+# minikube windows 7 installation
+
+1- VT-x/AMD-v virtualization must be enabled in BIOS
+2- Download Docker Toolbox for windows : https://www.docker.com/products/docker-toolbox > Install > if you have already virtualbox, uncheck it from the list
+3- Download kubectl for windows : https://github.com/eirslett/kubectl-windows > https://github.com/eirslett/kubectl-windows/releases > add to path
+4- Download minikube : https://github.com/kubernetes/minikube/releases > Windows/amd64 > add to path > rename it to minikube.exe
+5- put both exe above on the same directory where you added to PATH
+6- minikube.exe start  --vm-driver="virtualbox"  --alsologtostderr
+7- .kube will be created on the U: drive 
+8- if you get an error like this: E0116 01:49:45.855208 2991 start.go:102] Error starting host: Error getting state for host: machine does not exist
+	- see https://github.com/kubernetes/minikube/issues/459
+	- solution is to run minikube delete > cd %USERPROFILE% > rerun command : minikube.exe start --kubernetes-version="v1.5.0" --vm-driver="virtualbox"  --alsologtostderr
+9- you should get this if it works:
+	minikube start --vm-driver=virtualbox
+	Starting local Kubernetes cluster...
+	Starting VM...
+	SSH-ing files into VM...
+	Setting up certs...
+	Starting cluster components...
+	Connecting to cluster...
+	Setting up kubeconfig...
+	Kubectl is now configured to use the cluster.
+	
+	minikube status
+	
+	minikubeVM: Running
+	localkube: Running
+	
+	kubectl cluster-info
+	
+	Kubernetes master is running at https://192.168.99.100:8443
+	KubeDNS is running at https://192.168.99.100:8443/api/v1/proxy/namespaces/kube-system/services/kube-dns
+	kubernetes-dashboard is running at https://192.168.99.100:8443/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard	
+	
+	kubectl cluster-info dump
+	
+	C:\Users\eisraily>kubectl version
+	Client Version: version.Info{Major:"1", Minor:"5", GitVersion:"v1.5.0+$Format:%h$", GitCommit:"$Format:%H$", GitTreeState:"not a git tree", BuildDate:"1970-01-01T00:00:00Z", GoVersion:"go1.7.4", Compiler:"gc", Platform:"windows/amd64"}
+	Server Version: version.Info{Major:"1", Minor:"5", GitVersion:"v1.5.3", GitCommit:"029c3a408176b55c30846f0faedf56aae5992e9b", GitTreeState:"clean", BuildDate:"1970-01-01T00:00:00Z", GoVersion:"go1.7.3", Compiler:"gc", Platform:"linux/amd64"}
+
+	# cluster ip address:	
+	minikube ip 
+	
+	# launch k8s dashboard:
+	minikube dashboard
+	
+	# see dashboard url
+	minikube dashboard --url=true
+	
+	http://192.168.99.100:30000
+	
+	# get nodes
+	kubectl.exe get nodes
+	
+	NAME       STATUS    AGE
+	minikube   Ready     1h
+	
+#inspect the cluster for running pods:
+	

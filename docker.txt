@@ -1,0 +1,191 @@
+DOCKER user: mimi50 
+password: Testing12321!
+
+KEY: 1768b8a4-2db4-49ff-b370-b379b9abb820
+
+curl -u mimi50:1768b8a4-2db4-49ff-b370-b379b9abb820 https://cloud.docker.com/api/app/v1/service/
+
+# publish container to docker hub:
+
+1- docker login > user > password
+2- docker push mimi50/jmeter3:latest
+
+
+######## remove a bunch of containers: ###########################
+
+docker rm $(docker ps -a -q -f status=exited)
+###################################################################
+
+# show all containers on the system:
+
+docker ps -a
+
+# show docker images
+
+docker images
+
+# Build images
+
+docker build -t docker-whale .
+docker build -t firefox .
+
+# remove images ( force )
+
+docker rmi docker/whalesay -f
+
+# pull image from docker registry
+
+docker pull image
+
+
+# remove containers
+
+docker rm <container id>
+
+# stop running container
+
+docker stop <container id>
+
+# run image ( prakhar1989/static-site ) detached (-d), publish to random port (-P)  with special name (--name) 
+
+docker run -d -P --name special-name prakhar1989/static-site
+
+# run image to specific published port (-p) : http://localhost:8888
+
+docker run -p 8888:80 prakhar1989/static-site
+
+
+# run python in its own shell:
+docker run -it python sh
+
+
+# Search the Docker Hub for images
+
+docker search <string>
+
+# docker manage networks
+
+docker netork ls
+
+# docker save container to image or even running image
+1- docker ps -a : to get the container id
+2- docker commit <container id> <name of new image>
+3- for example: docker commit 5eb5381be3a5 xenial_unity
+4- verify new image:
+vagrant@ubuntu:~$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+xenial_unity        latest              385ac08824d6        9 seconds ago       970 MB
+xenial              latest              9a0a4ffcb027        37 minutes ago      194 MB
+
+
+# docker stop a running container
+docker stop -t 10 d52026c98ec3 # <container id>
+
+# run ubuntu with GUI
+1- docker run -p 5901:5901 queeno/ubuntu-desktop
+2- vnc 0.0.0.0:5901
+
+# docker run flags:
+-d : run container in background
+-p : publish to specific port e.g. run -p 80:8080 > map container port 80 to host port 8080
+-P : publish to random port
+
+# jenkins with data on hosts /home/vagrant/share/jenkins directory
+docker run -p 8080:8080 -p 50000:50000 -v /home/vagrant/share/jenkins:/var/jenkins_home jenkins
+
+# jmeter docker run command:
+docker run -ti --rm -v /home/vagrant/share:/home/developer -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix jmeter3
+
+docker run -ti --rm -v /home/vagrant/share:/opt/jmeter/bin -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix jmeter3
+
+docker run -ti --rm -v /home/vagrant/share:/home/developer -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix mimi50/jmeter3
+
+# run docker image with root access
+docker exec -u 0 -it mycontainer bash
+
+# docker inspect <container_name> or <container_id>
+docker inspect dreamy_poincare | grep IPAddress
+docker inspect dreamy_poincare
+
+# docker create overlay networks
+docker network create my-fancy-network
+
+# docker query your networks:
+
+docker network ls
+docker network inspect network_name
+
+# docker give your container a name
+
+docker run -it --rm --name container_name
+
+
+su -c "developer" -s /bin/sh jmeter &
+
+
+# docker console to running container ( jmeter is the docker container name)
+
+docker exec -it jmeter /bin/bash
+
+# docker private netork for group of containers 
+
+docker network create perf-net
+
+docker run --name jenkins --net=perf-net --rm -p 8000:8080 -p 50000:50000 -v /home/vagrant/share/jenkins:/var/jenkins_home mimi50/jenkins
+
+docker run -it --name jmeter --net=perf-net --rm  -v /home/vagrant/share:/home/developer -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix mimi50/jmeter3
+
+docker run -it --name hapi --net=perf-net --rm -p 8001:8080 -v /home/vagrant/share/hapi_fhir:/target mimi50/hapi-fhir /bin/bash /opt/hapi/hapi-fhir-cli run-server -f dstu3
+
+
+# latest perf-net 
+docker run --name jenkins --net=perf-net --rm -p 8000:8080 -p 50000:50000 -v /home/vagrant/share/jenkins:/var/jenkins_home mimi50/jenkins
+docker run -it --name jmeter --net=perf-net --rm  -v /home/vagrant/share/compose:/opt/jmeter  mimi50/jmeter3
+cd /home/developer/jmeter
+java -jar slave.jar -jnlpUrl http://jenkins:8080/computer/jmeter_docker/slave-agent.jnlp -secret 3c1904056e2057ad004a10d4a6adc6c10120cc23cb986e7c81dcb3a59d717055
+docker run -it --name hapi --net=perf-net --rm -p 8001:8080 -v /home/vagrant/share/hapi_fhir:/target mimi50/hapi-fhir /bin/bash /opt/hapi/hapi-fhir-cli run-server -f dstu3
+
+docker stop jmeter
+docker stop jenkins
+
+# install docker-compose
+with root account:
+curl -L https://github.com/docker/compose/releases/download/1.11.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# docker-compose testlink
+
+cd /home/vagrant/mydocker/testlink
+curl -LO https://raw.githubusercontent.com/bitnami/bitnami-docker-testlink/master/docker-compose.yml
+docker-compose up
+docker-compose stop testlink
+docker-compose stop mariadb
+
+# docker volumes:
+
+/var/lib/docker/volumes
+
+# rename a docker image:
+docker tag server:latest myname/server:latest
+
+# docker run with overiding the default user: -u flag
+
+docker run -u 1000 ...
+
+# docker run as root : -u flag
+docker run -u 0 ...
+
+# docker pass an environment variable: -e flag
+docker run -it -u 0 -e JMETER_HOME='/opt/jmeter/bin' jmtest2
+
+# docker run a container that exited which appears in the docker ps -a list:
+
+docker start <container_id> && docker attach <container_id> 
+enter
+
+e.g. docker start 32e8e8944046 && docker attach 32e8e8944046
+enter 
+
+
+# docker run -it --name jmeter --rm  -v /home/euserf/vshare/caas:/home/developer -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix mimi50/jmeter
+# docker run -it --name jmeter --rm  -v /home/vagrant/share/jmeter:/home/developer -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix mimi50/jmeter

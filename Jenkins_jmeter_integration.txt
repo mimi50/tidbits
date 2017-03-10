@@ -1,0 +1,47 @@
+Start the CLI hapi fire instance locally
+
+1- cd c:\vshare\hapi-fhir-2.2-cli
+2- hapi-fhir-cli run-server -f dstu3
+3- http://localhost:8080
+
+Jenkins start slave :
+
+1- https://build.cb.xyx.com:8080
+2- on lower left expand "Build Executor Status"
+3- click on your node (agent) ephi_win7
+4- copy the command to start your slave agent: 
+java -jar slave.jar -jnlpUrl https://build.cb.xyx.com:8080/computer/ephi_win7/slave-agent.jnlp -secret 3dea43cd681d73cfcec5e460bd6f750ea1ea1ba9d708a6d5184ac748fc052d0c
+5- cd to where slave.jar was downloaded e.g. cd C:\apache-jmeter-3.1\bin\caas
+6- run the command in #4 above
+7- check https://build.cb.xyx.com:8080/computer/ephi_win7/ do see if you are connected
+
+Jenkins configure job
+
+1- https://build.cb.xyx.com:8080/view/CaaS/
+2- click "New Item"
+3- 
+
+
+
+
+%JMETER_HOME%\jmeter -n -t %JMETER_HOME%\caas\postPlanDefi2nition.jmx -l api_functional.jtl -Jproto=http -Jhost=127.0.0.1 -Jport=8080 -Jcrud=post -Jbuild=%BUILD_NUMBER%
+%JMETER_HOME%\jmeter -n -t %JMETER_HOME%\caas\loadPlanDefi2nition.jmx -l load.jtl -Jproto=http -Jhost=127.0.0.1 -Jport=8080 -Jcrud=get -Jbuild=%BUILD_NUMBER%
+
+
+# docker console to running container ( jmeter is the docker container name)
+
+docker exec -it jmeter /bin/bash
+
+# docker private netork for group of containers 
+
+docker network create perf-net
+
+docker run --name jenkins --net=perf-net --rm -p 8000:8080 -p 50000:50000 -v /home/vagrant/share/jenkins:/var/jenkins_home jenkins
+
+docker run -it --name jmeter --net=perf-net --rm  -v /home/vagrant/share:/home/developer -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix mimi50/jmeter3
+
+cd /home/developer/jmeter
+java -jar slave.jar -jnlpUrl http://jenkins:8080/computer/jmeter_docker/slave-agent.jnlp -secret 3c1904056e2057ad004a10d4a6adc6c10120cc23cb986e7c81dcb3a59d717055
+
+docker stop jmeter
+docker stop jenkins

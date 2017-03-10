@@ -1,0 +1,8 @@
+Catalina ( tomcat7 ) set the timezone to override the server UTC timezone:
+vim /etc/sysconfig/tomcat7
+CATALINA_OPTS="-Duser.timezone=America/Los_Angeles"
+
+
+catalina.out ( tomcat7 log file ):
+/var/log/tomcat7/catalina.out
+

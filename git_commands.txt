@@ -1,0 +1,105 @@
+# local path to repo:
+
+cd /c/cb_repo/cb/scripts/Jmeter/MGUP/jmeter_scripts
+
+# repo paths:
+/v32_mo/scripts/Jmeter/MGUP/jmeter_scripts/
+
+
+GIT commands:
+
+#  git config
+
+git config --list
+git config --global user.email eisraily@xyx.com
+git config --global user.name "Ephraim Israily"
+
+
+# Clone master branch:
+git clone https://build.cb.xyx.com:8088/git/xyxhealth-cb/cb.git
+git clone https://build.cb.xyx.com:8088/git/eisraily/CaaS.git
+
+# Status:
+git status
+
+
+# To switch from master to other branch:
+
+# latest current MGH branch:
+git checkout Marin_Prod5a
+
+# latest current Ohio branch:
+git checkout v30_Prod_ohio
+
+# latest for v32_mo
+git checkout v32_mo
+
+""
+# get the latest version of the branch:
+$ cd ~/cb/cb
+$ git pull
+
+
+# add new file to the repo:
+
+git add "full path of file"
+git add "scripts/Jmeter/MGUP/Jmeter Scripts/jdbc_getLoginUsers.jmx"
+
+# commit changes:
+
+git commit -m "comments"
+
+git commit -a ( update )
+
+
+git pull
+
+git push
+
+git log 
+
+q ( to quit )
+
+# change directory name:
+git mv <old name> <new name>
+git commit -m "comments"
+git push	
+
+# git revert a commit/push
+
+git revert acb0107736f6615c5b62f2cfdac53a65664525f7
+
+# remove file from repo and local:
+git rm file1.txt
+git commit -m "remove file1.txt"
+
+# find commits by username:
+
+git log | grep 'praveen.karnati@harman.com' -C 5 #### include 5 lines above and below the email address
+
+# if you did a local change but you do a pull and it gives this error:
+error: Your local changes to the following files would be overwritten by merge:
+	scripts/Jmeter/MGUP/jmeter_scripts/Patient Creation.jmx
+Please, commit your changes or stash them before you can merge.
+
+1- If you don't care about your local changes:
+2- git checkout . # this will ignore your local changes and overwrite your changes.
+3- git pull
+
+# git add directory and files:
+git add <folder>/*
+git commit -m ' text '
+git push
+
+# git add all your changes:
+git add .
+
+# git history of a file:
+git log <filename>
+
+# git undo a commit before a push
+ git reset HEAD~
+ 
+# git get the info based on the hash value:
+git show 03a76891a3bd0c6d5ff70ab3dc23f34bcbe4bc56
+

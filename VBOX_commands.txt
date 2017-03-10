@@ -1,0 +1,4 @@
+VBOX:
+
+C:\Program Files\Oracle\VirtualBox>VBoxManage showvminfo centOS7 --details
+Welcome77

@@ -1,0 +1,5 @@
+# Jenkins configure > Build > Execute shell 
+
+$JMETER_HOME/jmeter -n -t /tmp/jmeter/postPlanDefi2nition.jmx -l api_functional.jtl -Jproto=http -Jhost=hapi -Jport=8080 -Jcrud=post -Jusers=1
+
+$JMETER_HOME/jmeter -n -t /tmp/jmeter/loadPlanDefi2nition.jmx -l load.jtl -Jproto=http -Jhost=hapi -Jport=8080 -Jcrud=get -Jbuild=$BUILD_NUMBER
